@@ -13,8 +13,8 @@
     <body class="antialiased">
         <div>
             <a href="/users/create">회원가입</a>
-           </div>
-           <div>
+            </div>
+            <div>
             <a href="/users">회원 리스트 보기</a>
             @foreach ($users as $user)
                 <div>
@@ -25,6 +25,6 @@
                     이메일: {{$user["email"]}} <br>
                 </div>
             @endforeach
-           </div>
+            </div>
     </body>
 </html>
