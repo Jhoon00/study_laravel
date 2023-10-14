@@ -3,47 +3,106 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function test() : View {
-        return view('welcome');
+    protected static $users = [
+        ['id'=>1, 'name'=>'고길동', 'birthDate'=>'1999/01/02', 'email'=>'gdgo@gmail.com'],
+        ['id'=>2, 'name'=>'홍길동', 'birthDate'=>'1998/06/02', 'email'=>'gdh@gmail.com'],
+        ['id'=>3, 'name'=>'박동훈', 'birthDate'=>'1599/05/02', 'email'=>'dhp@gmail.com'],
+        ['id'=>4, 'name'=>'박찬호', 'birthDate'=>'1699/02/02', 'email'=>'chp@gmail.com'],
+        ['id'=>5, 'name'=>'박문수', 'birthDate'=>'1990/07/02', 'email'=>'msp@gmail.com']
+    ];
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return view('welcome', ['users'=>static::$users]);
     }
 
-    public function create() : View {
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
         return view('register_form');
     }
 
-    public function edit() : View {
-        return view('update_form');
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $req)
+    {
+        return redirect('/users/3');
     }
 
-    public function index() :View {
-        return view('list');
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $userFound = null;
+        foreach (static::$users as $user) {
+            if ($user["id"] == $id) {
+                $userFound = $user;
+                break;
+            }
+        }
+
+        $userFound = $userFound!=null? $userFound : [];
+        return view('user_info', ['user'=>$userFound]);
     }
 
-    public function store(Request $req) : View {
-        $name = $req->name;
-        $email = $req->email;
-        $birthDate = $req->birthDate;
-        $organization = $req->organization;
-
-        return view('register', ['name' => $name, 'email' => $email, 'birthDate' => $birthDate, 'organization' => $organization]);
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $userFound = null;
+        for ($i=0; $i < sizeof(static::$users); $i++) {
+            if (static::$users[$i]["id"] == $id) {
+                $userFound = static::$users[$i];
+                break;
+            }
+        }
+        return view('update_form', ['user'=>$userFound]);
     }
 
-    public function update(Request $req) : View {
-        $name = $req->name;
-        $email = $req->email;
-        $birthDate = $req->birthDate;
-        $organization = $req->organization;
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $name = $request->input("name");
+        $birthDate = $request->input("birthDate");
+        $email = $request->input("email");
+        $updatedUser = null;
 
-        return view('update', ['name' => $name, 'email' => $email, 'birthDate' => $birthDate, 'organization' => $organization]);
+        for ($i=0; $i < sizeof(static::$users); $i++) {
+            if (static::$users[$i]["id"] == $id) {
+                static::$users[$i]["name"]=$name;
+                static::$users[$i]["birthDate"] = $birthDate;
+                static::$users[$i]["email"] = $email;
+                $updatedUser = static::$users[$i];
+                // dd(static::$users[$i]);
+                break;
+            }
+        }
+        return redirect('/users/'.$updatedUser['id']);
     }
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        for ($i=0; $i < sizeof(static::$users); $i++) {
+            if(static::$users[$i]['id']==$id) {
+                unset(static::$users[$i]);
+            }
+        }
 
-    public function destroy(Request $req) {
-        $name = $req->name;
-
-        return view('remove', ["name" => $name]);
+        return redirect('/users');
     }
-};
+}

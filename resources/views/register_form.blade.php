@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/register" method="POST">
+    <form action="/users" method="POST">
         @csrf
         <span>이름 : </span> <input type="text" name="name"> <br>
         <span>생년월일(YYYY/MM/DD) : </span> <input type="text" name="birthDate"> <br>

@@ -7,13 +7,12 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/update" method="POST">
+    <form action="/update/{{$user['id']}}" method="POST">
         @csrf
         @method("put")
-        <span>이름 : </span> <input type="text" name="name" value="ㄱㅈㅎ" readonly> <br>
-        <span>생년월일(YYYY/MM/DD) : </span> <input type="text" name="birthDate" value="2000/06/02" readonly> <br>
-        <span>email : </span> <input type="text" name="email" value="gjh@yju.ac.kr" > <br>
-        <span>소속 : </span> <input type="text" name="organization" value="student"> <br>
+        <span>이름 : </span> <input type="text" name="name" value='{{$user["name"]}}' readonly> <br>
+        <span>생년월일(YYYY/MM/DD) : </span> <input type="text" name="birthDate" value='{{$user["birthDate"]}}' readonly> <br>
+        <span>email : </span> <input type="text" name="email" value='{{$user["email"]}}' > <br>
         <input type="submit" value="수정">
     </form>
 </body>
