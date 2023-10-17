@@ -12,7 +12,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        return "게시글 UP"
+        $posts = Post::all();
+
+        return view('post.post_list', ['posts' => $posts]);
     }
 
     /**
@@ -20,7 +22,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.register_form');
+        return view('post.register_form');
     }
 
     /**
@@ -45,7 +47,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $post = Post::find($id);
+        return view('post.show_post', ['post'=> $post]);
     }
 
     /**
@@ -53,7 +56,8 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::find($id);
+        return view('post.edit_post', ['post'=>$post]);
     }
 
     /**
@@ -61,7 +65,13 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $post = Post::find($id);
+        $post -> title = $request->title;
+        $post -> content = $request->content;
+
+        $post->save();
+
+        return redirect('/posts/' .$post-> id);
     }
 
     /**
