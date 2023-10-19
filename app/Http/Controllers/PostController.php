@@ -12,9 +12,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        // $posts = Post::all();
 
-        return view('post.post_list', ['posts' => $posts]);
+        $posts = Post::orderByDesc('created_at')->get();
+
+        $count = $posts->count();
+
+        return view('post.post_list', ['posts' => $posts, 'count'=> $count]);
     }
 
     /**
@@ -33,11 +37,20 @@ class PostController extends Controller
         $title = $req->title;
         $content = $req->content;
 
-        $post = new Post;
-        $post->title = $title;
-        $post->content = $content;
-        $post->user_id = 2;
-        $post->save();
+        // $post = new Post;
+        // $post->title = $title;
+        // $post->content = $content;
+        // $post->user_id = 2;
+        // $post->save();
+
+        // dd($req->all());
+        // Post::create(['title'=>$title, 'content'=>$content, 'user_id'=>2]);
+        $req->input('user_id', 2);
+
+        $req->merge(['user_id'=>2]);
+        // dd($req->all());
+
+        Post::creat($req->all());
 
         return redirect('/posts');
     }
@@ -48,6 +61,12 @@ class PostController extends Controller
     public function show(string $id)
     {
         $post = Post::find($id);
+
+        // $post = Post::where('id', $id)->first();
+        // dd($post->title);
+
+        // $post = Post::firstWhere('id', $id);
+
         return view('post.show_post', ['post'=> $post]);
     }
 
