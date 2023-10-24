@@ -50,7 +50,7 @@ class PostController extends Controller
         $req->merge(['user_id'=>2]);
         // dd($req->all());
 
-        Post::creat($req->all());
+        Post::create($req->all());
 
         return redirect('/posts');
     }
@@ -84,13 +84,15 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $post = Post::find($id);
-        $post -> title = $request->title;
-        $post -> content = $request->content;
+        // $post = Post::find($id);
+        // $post -> title = $request->title;
+        // $post -> content = $request->content;
 
-        $post->save();
+        // $post->save();
 
-        return redirect('/posts/' .$post-> id);
+        Post::where('id', $id)->update(['title'=>$request->title, 'content'=>$request->content]);
+
+        return redirect('/posts/' .$id);
     }
 
     /**
@@ -98,6 +100,8 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Post::destroy($id);
+
+        return redirect('/posts');
     }
 }

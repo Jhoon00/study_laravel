@@ -9,5 +9,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'content', 'user_id'];
+    protected $fillable = ['title', 'content', 'user_id']; //화이트 리스트
+
+    // protected $guarded = ['created_at']; //블랙 리스트
 }
