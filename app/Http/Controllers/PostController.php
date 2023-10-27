@@ -45,9 +45,9 @@ class PostController extends Controller
 
         // dd($req->all());
         // Post::create(['title'=>$title, 'content'=>$content, 'user_id'=>2]);
-        $req->input('user_id', 2);
+        $req->input('user_id', 1);
 
-        $req->merge(['user_id'=>2]);
+        $req->merge(['user_id'=>1]);
         // dd($req->all());
 
         Post::create($req->all());
